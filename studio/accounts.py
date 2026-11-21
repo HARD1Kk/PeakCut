@@ -701,8 +701,7 @@ def zernio_upload(acc, path: Path, title: str, description: str, clip: dict, cre
         "publishNow": True,
     }
 
-    idempotency_key = clip.get("zernio_idempotency_key") or str(uuid.uuid4())
-    clip["zernio_idempotency_key"] = idempotency_key
+    idempotency_key = f"{clip.get('id', 'clip')}_{acc['id']}_{secrets.token_hex(4)}"
 
     post_resp = _check(httpx.post(
         "https://zernio.com/api/v1/posts",
